@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Farooqi's — Portfolio</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+
+<!-- ================= CSS ================= -->
+<style>
+  :root{--ink:#1A2238;--paper:#FAF8F3;--brass:#5BA8D6;--slate:#5C6178;--card:#EAF3F9;--cardborder:#cfe4f0;}
+  *{margin:0;padding:0;box-sizing:border-box;}
+
+  body{
+    font-family:'Inter',sans-serif;
+    color:#2B2B2B;
+    line-height:1.6;
+    background:
+      radial-gradient(circle at 15% 10%, rgba(255,255,255,0.55) 0%, transparent 40%),
+      radial-gradient(circle at 80% 15%, rgba(255,255,255,0.4) 0%, transparent 35%),
+      radial-gradient(circle at 50% 85%, rgba(255,255,255,0.3) 0%, transparent 45%),
+      linear-gradient(160deg, #BEE3F8 0%, #D6ECFA 30%, #EAF5FB 60%, #FDF8F0 100%);
+    background-attachment:fixed;
+    min-height:100vh;
+    transition:background .4s ease, color .4s ease;
+  }
+
+  body.dark{
+    color:#EDEAE0;
+    background:
+      radial-gradient(circle at 15% 10%, rgba(255,255,255,0.06) 0%, transparent 40%),
+      radial-gradient(circle at 80% 15%, rgba(255,255,255,0.05) 0%, transparent 35%),
+      linear-gradient(160deg, #11162B 0%, #161D38 50%, #1A2238 100%);
+  }
+  body.dark h1, body.dark h2{color:#F4F1E8;}
+  body.dark .about{color:#D8D4C8;}
+  body.dark .item b{color:#F4F1E8;}
+  body.dark .item span{color:#9AA0B8;}
+  body.dark .tags span{background:rgba(255,255,255,0.06);border-color:rgba(255,255,255,0.12);color:#EDEAE0;}
+  body.dark .contact a{color:#F4F1E8;}
+  body.dark .social-icons a{color:#F4F1E8;background:rgba(255,255,255,0.08);}
+
+  .mode-toggle{
+    position:fixed;
+    top:20px; right:74px;
+    width:42px; height:42px;
+    border-radius:50%;
+    border:1px solid var(--cardborder);
+    background:#fff;
+    cursor:pointer;
+    font-size:18px;
+    display:flex; align-items:center; justify-content:center;
+    z-index:300;
+    transition:transform .25s ease, background .3s ease;
+  }
+  .mode-toggle:hover{transform:scale(1.08);}
+  body.dark .mode-toggle{background:#1A2238; border-color:rgba(255,255,255,0.15);}
+
+  .wrap{max-width:760px;margin:auto;padding:80px 24px;}
+
+  .header-top{display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:14px;margin:0 auto 6px;width:100%;}
+  .profile-pic{width:130px;height:130px;border-radius:50%;object-fit:cover;object-position:center;border:3px solid var(--brass);flex-shrink:0;display:block;margin:0 auto;}
+
+  h1{font-family:'Fraunces',serif;font-size:42px;color:var(--ink);line-height:1.1;}
+  .role{color:var(--brass);font-weight:600;font-size:15px;letter-spacing:.03em;text-transform:uppercase;margin-top:6px;}
+  .about{color:#2B2B2B;margin:28px auto 10px;font-size:15.5px;max-width:600px;text-align:center;border-left:none;padding-left:0;}
+
+  h2{font-family:'Fraunces',serif;font-size:22px;color:var(--ink);margin:50px 0 16px;border-bottom:2px solid var(--brass);display:inline-block;padding-bottom:4px;}
+
+  .item{margin-bottom:18px;}
+  .cert-item{display:flex;align-items:flex-start;gap:10px;max-width:420px;margin-left:auto;margin-right:auto;text-align:left;}
+  .cert-icon{font-size:20px;flex-shrink:0;line-height:1;}
+  .item b{color:var(--ink);}
+  .item span{color:var(--slate);font-size:14px;display:block;}
+
+  .tags{display:flex;flex-direction:column;gap:8px;margin-top:30px;align-items:center;margin-left:auto;margin-right:auto;}
+  .tags span{background:#EAF3F9;border:1px solid #cfe4f0;padding:6px 14px;border-radius:20px;font-size:13px;}
+
+  .skill-row{width:100%;max-width:400px;margin-bottom:18px;}
+  .skill-label{display:flex;justify-content:space-between;font-size:14px;margin-bottom:6px;color:var(--ink);font-weight:500;}
+  .skill-bar-bg{width:100%;height:8px;border-radius:10px;background:#DCEAF4;overflow:hidden;}
+  .skill-bar-fill{height:100%;border-radius:10px;background:linear-gradient(90deg, var(--brass), #8AC4E8);width:0%;transition:width 1.2s ease;}
+  body.dark .skill-bar-bg{background:rgba(255,255,255,0.08);}
+  body.dark .skill-label{color:#F4F1E8;}
+
+  .talk-form{display:flex;flex-direction:column;gap:14px;max-width:420px;margin:24px auto 0;text-align:left;}
+  .talk-form input, .talk-form textarea{
+    font-family:'Inter',sans-serif;
+    font-size:14px;
+    padding:12px 14px;
+    border:1px solid #cfe4f0;
+    border-radius:10px;
+    background:rgba(255,255,255,0.6);
+    color:#2B2B2B;
+    outline:none;
+    transition:border-color .25s ease;
+  }
+  .talk-form input:focus, .talk-form textarea:focus{border-color:var(--brass);}
+  .talk-form textarea{resize:vertical;min-height:90px;}
+  .talk-form button{
+    align-self:flex-start;
+    background:var(--ink);
+    color:#fff;
+    font-size:14px;
+    font-weight:600;
+    padding:11px 26px;
+    border:none;
+    border-radius:30px;
+    cursor:pointer;
+    transition:background .25s ease, transform .25s ease;
+  }
+  .talk-form button:hover{background:var(--brass); transform:translateY(-2px);}
+  .form-note{font-size:13px;color:var(--slate);margin-top:10px;}
+
+  body.dark .talk-form input, body.dark .talk-form textarea{
+    background:rgba(255,255,255,0.06);
+    border-color:rgba(255,255,255,0.15);
+    color:#EDEAE0;
+  }
+  body.dark .form-note{color:#9AA0B8;}
+  .copyright{text-align:center; font-size:13px; color:var(--slate); margin-top:60px; padding-bottom:20px;}
+  body.dark .copyright{color:#9AA0B8;}
+
+  /* Navbar */
+  section{scroll-margin-top:90px;}
+  .navbar{
+    position:fixed;
+    top:0; left:0; right:0;
+    display:flex;
+    justify-content:flex-end;
+    align-items:center;
+    padding:18px 24px;
+    z-index:200;
+    pointer-events:none;
+  }
+  .navbar .hamburger{pointer-events:auto;}
+  .hamburger{
+    width:42px;height:42px;
+    border-radius:50%;
+    background:#fff;
+    border:1px solid var(--cardborder);
+    cursor:pointer;
+    display:flex;flex-direction:column;justify-content:center;align-items:center;
+    gap:5px;
+    transition:background .3s ease;
+  }
+  .hamburger span{width:18px;height:2px;background:var(--ink);border-radius:2px;transition:.3s ease;}
+  body.dark .hamburger{background:#1A2238;border-color:rgba(255,255,255,0.15);}
+  body.dark .hamburger span{background:#F4F1E8;}
+
+  .nav-menu{
+    position:fixed;
+    top:70px; right:24px;
+    background:#fff;
+    border:1px solid var(--cardborder);
+    border-radius:14px;
+    padding:10px;
+    display:flex;
+    flex-direction:column;
+    gap:2px;
+    min-width:190px;
+    box-shadow:0 10px 30px rgba(0,0,0,0.12);
+    opacity:0;
+    transform:translateY(-8px);
+    pointer-events:none;
+    transition:opacity .2s ease, transform .2s ease;
+    z-index:199;
+  }
+  .nav-menu.open{opacity:1; transform:translateY(0); pointer-events:auto;}
+  .nav-menu a{
+    padding:10px 14px;
+    border-radius:8px;
+    font-size:14px;
+    color:var(--ink);
+    text-decoration:none;
+    transition:background .2s ease;
+  }
+  .nav-menu a:hover{background:var(--card);}
+  body.dark .nav-menu{background:#161D38;border-color:rgba(255,255,255,0.12);}
+  body.dark .nav-menu a{color:#F4F1E8;}
+  body.dark .nav-menu a:hover{background:rgba(255,255,255,0.06);}
+
+  .contact a{color:var(--ink);border-bottom:1px solid var(--brass);text-decoration:none;margin-right:20px;font-size:14px;}
+  .contact a:hover{color:var(--brass);}
+
+  .resume-btn{
+    display:block;
+    width:fit-content;
+    margin:18px auto 0;
+    background:var(--ink);
+    color:#fff;
+    font-size:14px;
+    font-weight:600;
+    padding:10px 22px;
+    border-radius:30px;
+    text-decoration:none;
+    transition:background .25s ease, transform .25s ease;
+  }
+  .resume-btn:hover{background:var(--brass); transform:translateY(-2px);}
+
+  .social-icons{display:flex;gap:12px;margin-top:14px;justify-content:center;}
+  .social-icons a{
+    width:40px;height:40px;
+    border-radius:50%;
+    background:var(--card);
+    border:1px solid var(--cardborder);
+    display:flex;align-items:center;justify-content:center;
+    color:var(--ink);
+    transition:background .25s ease, transform .25s ease, color .25s ease;
+  }
+  .social-icons a:hover{transform:translateY(-3px); color:#fff;}
+  .social-icons a.icon-email:hover{background:#EA4335;}
+  .social-icons a.icon-linkedin:hover{background:#0A66C2;}
+  .social-icons a.icon-github:hover{background:#181717;}
+  .social-icons svg{width:19px;height:19px;}
+
+  .typing-line{font-family:'JetBrains Mono',monospace;font-size:14px;color:var(--brass);margin-top:6px;min-height:18px;}
+  .typing-line::after{content:"|";animation:blink 0.9s infinite;}
+  @keyframes blink{50%{opacity:0;}}
+
+  .reveal{opacity:0;transform:translateY(24px);transition:opacity .6s ease,transform .6s ease;}
+  .reveal.show{opacity:1;transform:translateY(0);}
+</style>
+</head>
+
+<!-- ================= HTML ================= -->
+<body>
+<button class="mode-toggle" id="modeToggle" aria-label="Toggle dark mode">🌙</button>
+
+<nav class="navbar">
+  <button class="hamburger" id="hamburgerBtn" aria-label="Open menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+<div class="nav-menu" id="navMenu">
+  <a href="#about">About</a>
+  <a href="#work">Work & Education</a>
+  <a href="#projects">Projects</a>
+  <a href="#skills">Skills</a>
+  <a href="#certifications">Certifications</a>
+  <a href="#contact">Contact</a>
+  <a href="resume.pdf" download>Download Resume</a>
+</div>
+<div class="wrap">
+
+  <section class="reveal" id="about" style="text-align:center;">
+    <div class="header-top">
+      <img src="photo.jpeg" alt="Muhammad Umar Farooqi" class="profile-pic">
+      <div>
+        <h1>Muhammad Umar Farooqi</h1>
+        <p class="role">Associate Software Engineer</p>
+        <p class="typing-line" id="typingLine"></p>
+      </div>
+    </div>
+    <a href="resume.pdf" download class="resume-btn">Download Resume ↓</a>
+    <p class="about">MERN stack developer who builds fast, scalable web applications from database to UI. I work across MongoDB, Express, React, and Node.js to turn ideas into clean, production-ready products — writing efficient backend logic, designing intuitive interfaces, and making sure everything works smoothly end to end. I enjoy solving real problems with code and constantly learning new tools to build better software.</p>
+  </section>
+
+  <section class="reveal" id="work" style="text-align:center;">
+    <h2>Work & Education</h2>
+    <div class="item"><b>Associate Software Engineer</b> — CodingPixel<span>2026 – Present</span></div>
+    <div class="item"><b>BS. Software Engineering</b> — The University of Haripur<span>2021 – 2025</span></div>
+  </section>
+
+  <section class="reveal" id="skills" style="text-align:center;">
+    <h2>Skills</h2>
+    <div class="tags">
+      <div class="skill-row">
+        <div class="skill-label"><span>Python</span><span>90%</span></div>
+        <div class="skill-bar-bg"><div class="skill-bar-fill" data-percent="90"></div></div>
+      </div>
+      <div class="skill-row">
+        <div class="skill-label"><span>Leadership</span><span>80%</span></div>
+        <div class="skill-bar-bg"><div class="skill-bar-fill" data-percent="80"></div></div>
+      </div>
+      <div class="skill-row">
+        <div class="skill-label"><span>React</span><span>40%</span></div>
+        <div class="skill-bar-bg"><div class="skill-bar-fill" data-percent="40"></div></div>
+      </div>
+      <div class="skill-row">
+        <div class="skill-label"><span>Node.js</span><span>40%</span></div>
+        <div class="skill-bar-bg"><div class="skill-bar-fill" data-percent="40"></div></div>
+      </div>
+      <div class="skill-row">
+        <div class="skill-label"><span>SQL</span><span>40%</span></div>
+        <div class="skill-bar-bg"><div class="skill-bar-fill" data-percent="40"></div></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="reveal" id="projects" style="text-align:center;">
+    <h2>Projects</h2>
+    <div class="item"><b>FYP</b> — AI Based Bug Detection in CI/CD Pipeline<span>ML· Jinkins · Gitlab CI </span></div>
+    <p class="about" style="margin-top:14px;">This project delivers an AI-powered solution to detect software bugs and vulnerabilities proactively within CI/CD pipelines. Using machine learning techniques, the system analyzes source code metrics to identify potential issues before deployment. Integrated with tools like Jenkins and GitLab CI, it enhances the software development workflow by providing real-time bug prediction and security checks.</p>
+  </section>
+
+  <section class="reveal" id="certifications" style="text-align:center;">
+    <h2>Certifications</h2>
+    <div class="item cert-item">
+      <span class="cert-icon">🎖</span>
+      <div><b>Google Cybersecurity Professional Certificate</b><span>2024</span></div>
+    </div>
+    <div class="item cert-item">
+      <span class="cert-icon">🎖</span>
+      <div><b>Google Digital Marketing &amp; E-commerce Professional Certificate</b><span>2024</span></div>
+    </div>
+    <div class="item cert-item">
+      <span class="cert-icon">🎖</span>
+      <div><b>Google Advanced Data Analytics Professional Certificate</b><span>2024</span></div>
+    </div>
+    <div class="item cert-item">
+      <span class="cert-icon">🎖</span>
+      <div><b>Google UX Design Professional Certificate</b><span>2024</span></div>
+    </div>
+  </section>
+
+  <section class="reveal" id="contact" style="text-align:center;">
+    <h2>Contact</h2>
+    <div class="social-icons">
+      <a href="mailto:muhammadumarfarooqi347@gmail.com" aria-label="Email" class="icon-email">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M2 5.5C2 4.67 2.67 4 3.5 4h17c.83 0 1.5.67 1.5 1.5v13c0 .83-.67 1.5-1.5 1.5h-17C2.67 20 2 19.33 2 18.5v-13zM4.5 6.2v.4l7.5 5.4 7.5-5.4v-.4h-15zM19.5 8.3l-7.04 5.07a.8.8 0 0 1-.92 0L4.5 8.3v10.2h15V8.3z"/></svg>
+      </a>
+      <a href="https://www.linkedin.com/in/muhammad-umar-farooqi-8825b9227" target="_blank" rel="noopener" aria-label="LinkedIn" class="icon-linkedin">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.45 20.45h-3.55v-5.57c0-1.33-.02-3.04-1.85-3.04-1.85 0-2.13 1.45-2.13 2.94v5.67H9.37V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.38-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28zM5.34 7.43a2.06 2.06 0 1 1 0-4.12 2.06 2.06 0 0 1 0 4.12zM7.12 20.45H3.56V9h3.56v11.45z"/></svg>
+      </a>
+      <a href="https://github.com/code4umar" target="_blank" rel="noopener" aria-label="GitHub" class="icon-github">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.58 2 12.2c0 4.5 2.87 8.32 6.84 9.67.5.1.68-.22.68-.49 0-.24-.01-1.05-.01-1.9-2.78.62-3.37-1.21-3.37-1.21-.45-1.18-1.11-1.5-1.11-1.5-.91-.64.07-.62.07-.62 1 .07 1.53 1.05 1.53 1.05.89 1.56 2.34 1.11 2.91.85.09-.66.34-1.11.62-1.37-2.22-.26-4.55-1.13-4.55-5.03 0-1.11.38-2.02 1.03-2.73-.1-.26-.45-1.32.1-2.75 0 0 .84-.27 2.75 1.04a9.3 9.3 0 0 1 5.01 0c1.91-1.31 2.75-1.04 2.75-1.04.55 1.43.2 2.49.1 2.75.65.71 1.03 1.62 1.03 2.73 0 3.91-2.34 4.77-4.57 5.02.36.32.67.94.67 1.9 0 1.37-.01 2.47-.01 2.81 0 .27.18.6.69.49A10.02 10.02 0 0 0 22 12.2C22 6.58 17.52 2 12 2z"/></svg>
+      </a>
+    </div>
+  </section>
+
+  <section class="reveal" style="text-align:center;">
+    <h2>Let's Talk</h2>
+    <form class="talk-form" id="talkForm">
+      <input type="text" placeholder="Your Name" required>
+      <input type="email" placeholder="Your Email" required>
+      <textarea placeholder="Your Message" required></textarea>
+      <button type="submit">Send Message</button>
+    </form>
+    <p class="form-note" id="formNote"></p>
+  </section>
+
+  <p class="copyright">© 2026 Muhammad Umar Farooqi. All rights reserved.</p>
+
+</div>
+
+<!-- ================= JS ================= -->
+<script>
+  const items = document.querySelectorAll('.reveal');
+
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) e.target.classList.add('show');
+    });
+  }, { threshold: 0.15 });
+
+  items.forEach(el => obs.observe(el));
+
+  // Hamburger menu toggle
+  const hamburgerBtn = document.getElementById('hamburgerBtn');
+  const navMenu = document.getElementById('navMenu');
+  hamburgerBtn.addEventListener('click', () => navMenu.classList.toggle('open'));
+
+  navMenu.querySelectorAll('a[href^="#"]').forEach(link => {
+    link.addEventListener('click', (e) => {
+      e.preventDefault();
+      navMenu.classList.remove('open');
+      const targetId = link.getAttribute('href').slice(1);
+      const targetEl = document.getElementById(targetId);
+      if(targetEl){
+        setTimeout(() => {
+          targetEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }, 50);
+      }
+    });
+  });
+
+  document.addEventListener('click', (e) => {
+    if(!navMenu.contains(e.target) && !hamburgerBtn.contains(e.target)){
+      navMenu.classList.remove('open');
+    }
+  });
+
+  // Dark mode toggle
+  const toggleBtn = document.getElementById('modeToggle');
+  toggleBtn.addEventListener('click', () => {
+    document.body.classList.toggle('dark');
+    toggleBtn.textContent = document.body.classList.contains('dark') ? '☀️' : '🌙';
+  });
+
+  // Typing animation
+  const phrases = ["MERN Stack Developer", "MongoDB · Express · React · Node.js", "Building clean, scalable web apps"];
+  const typingEl = document.getElementById('typingLine');
+  let phraseIndex = 0, charIndex = 0, deleting = false;
+
+  function typeLoop(){
+    const current = phrases[phraseIndex];
+    if(!deleting){
+      typingEl.textContent = current.slice(0, charIndex + 1);
+      charIndex++;
+      if(charIndex === current.length){
+        deleting = true;
+        setTimeout(typeLoop, 1400);
+        return;
+      }
+    } else {
+      typingEl.textContent = current.slice(0, charIndex - 1);
+      charIndex--;
+      if(charIndex === 0){
+        deleting = false;
+        phraseIndex = (phraseIndex + 1) % phrases.length;
+      }
+    }
+    setTimeout(typeLoop, deleting ? 35 : 60);
+  }
+  typeLoop();
+
+  // Animate skill bars when visible
+  const skillBars = document.querySelectorAll('.skill-bar-fill');
+  const skillObs = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.style.width = e.target.dataset.percent + '%';
+        skillObs.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.3 });
+  skillBars.forEach(bar => skillObs.observe(bar));
+
+  // Contact form -> opens mail client with prefilled message
+  const talkForm = document.getElementById('talkForm');
+  const formNote = document.getElementById('formNote');
+  talkForm.addEventListener('submit', function(e){
+    e.preventDefault();
+    const name = talkForm.querySelectorAll('input')[0].value;
+    const email = talkForm.querySelectorAll('input')[1].value;
+    const message = talkForm.querySelector('textarea').value;
+    const subject = encodeURIComponent('Portfolio Contact from ' + name);
+    const body = encodeURIComponent(message + '\n\nFrom: ' + name + ' (' + email + ')');
+    window.location.href = 'mailto:muhammadumarfarooqi347@gmail.com?subject=' + subject + '&body=' + body;
+    formNote.textContent = "Opening your email app...";
+  });
+</script>
+</body>
+</html>
